@@ -5,10 +5,6 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-import pudb
-
-pudb.set_trace()
-
 
 
 class CategoryDumperPipeline(object):

@@ -6,9 +6,6 @@ import logging
 import logging.config
 import ast
 
-import pudb
-
-pudb.set_trace()
 
 # CONFIGURATION FILE
 CURRENT_DIR = os.getcwd()
