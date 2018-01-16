@@ -6,9 +6,22 @@ import logging
 import logging.config
 import ast
 
+import pudb
+
+pudb.set_trace()
+
 # CONFIGURATION FILE
 CURRENT_DIR = os.getcwd()
 
+
+def clean_string(string):
+    for each in [' ', '\t']:
+        string = string.strip(each)
+        string = string.lstrip(each)
+        string = string.rstrip(each)
+    string = string.replace("\n", "")
+    return string
+    
 
 # Configuration Parameters
 MAIN_URL = "main_url"  # the starting point of the crawler
@@ -55,15 +68,15 @@ class CategorySpider(scrapy.Spider):
         # getting list of categories
         category_results = response.xpath(
                 self.config.get(CATEGORY_RESULTS, ''))
-
         for category in category_results:
             # category name
             category_name = category.xpath(
                     self.config.get(CATEGORY_NAME, "")).extract_first()
+            category_name = clean_string(category_name)
             # category link
             category_link = category.xpath(
                     self.config.get(CATEGORY_PATH, "")).extract_first()
-
+            category_link = clean_string(category_link)
             # if part_url is available then, add it to category link
             if 'part_url' in self.config.keys():
                 category_link=self.config.get(PART_URL, "")+category_link
@@ -95,8 +108,10 @@ class CategorySpider(scrapy.Spider):
         for subcategory in subcategory_results:
             subcategory_name = subcategory.xpath(
                     self.config.get(SUBCATEGORY_NAME, "")).extract_first()
+            subcategory_name = clean_string(subcategory_name)
             subcategory_link = subcategory.xpath(
                     self.config.get(SUBCATEGORY_PATH, "")).extract_first()
+            subcategory_link = clean_string(subcategory_link)
             yield {
                 'category': response.meta.get("category", ""),
                 'subcategory_name': subcategory_name,
